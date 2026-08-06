@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { ConnectAlmostThereModal } from '../components/ConnectAlmostThereModal'
 import { TicketingSiteFooter } from '../components/TicketingSiteFooter'
 import { VerificationCodeInput } from '../components/VerificationCodeInput'
 import { getFestivalEvent } from '../lib/festivalEvent'
-import { placeholderGuestForPostBooking, type EventCheckoutState } from '../lib/checkoutState'
+import { placeholderGuestForPostBooking, type EventCheckoutState, checkoutRequiresPmrProof, checkoutHasPmrProof } from '../lib/checkoutState'
 import {
   clearCheckoutFormDrafts,
   clearConnectFlow,
@@ -13,7 +13,8 @@ import {
   type ConnectFlowStep,
 } from '../lib/checkoutFlowStorage'
 import { readProfileReturnPath } from '../lib/profileNavigation'
-import { accountPath, checkoutPath, guestCheckoutPath, planPath } from '../lib/routes'
+import { accountPath, checkoutPath, guestCheckoutPath, planPath, pmrPreBookingPath } from '../lib/routes'
+import { scrollPageToTop } from '../lib/scrollPageToTop'
 import { emailToDisplayName, upsertUserSession } from '../lib/userSession'
 import '../CheckoutPage.css'
 import '../ConnectPage.css'
@@ -65,9 +66,9 @@ export function ConnectPage() {
     if (eventId) clearCheckoutFormDrafts(eventId)
   }, [eventId])
 
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [eventId, step])
+  useLayoutEffect(() => {
+    return scrollPageToTop()
+  }, [step])
 
   const resetConnectForm = () => {
     const next = emptyConnectForm()
@@ -148,6 +149,10 @@ export function ConnectPage() {
         guest: placeholderGuestForPostBooking(trimmed, name),
       }
       persistCheckoutBasket(eventId, checkoutPayload)
+      if (checkoutRequiresPmrProof(checkoutPayload) && !checkoutHasPmrProof(checkoutPayload)) {
+        navigate(pmrPreBookingPath(eventId), { state: checkoutPayload })
+        return
+      }
       navigate(checkoutPath(eventId), { state: checkoutPayload })
     })
     return true
@@ -201,6 +206,10 @@ export function ConnectPage() {
     const next: EventCheckoutState = { ...data, guestCheckout: true }
     persistCheckoutBasket(eventId, next)
     clearConnectFlow(eventId)
+    if (checkoutRequiresPmrProof(next) && !checkoutHasPmrProof(next)) {
+      navigate(pmrPreBookingPath(eventId), { state: next })
+      return
+    }
     navigate(guestCheckoutPath(eventId), { state: next })
   }
 

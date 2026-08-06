@@ -6,8 +6,10 @@ export type PlanCategory = {
 export const PLAN_CATEGORIES: PlanCategory[] = [
   { id: 'overview', title: 'Overview' },
   { id: 'tickets', title: 'Festival Tickets' },
+  { id: 'pmr', title: 'PMR/PSH & Accompagnant' },
   { id: 'camping', title: 'Camping' },
-  { id: 'transport', title: 'Travel & Parking' },
+  { id: 'parking', title: 'Parking' },
+  { id: 'bar', title: 'Bar' },
   { id: 'merch', title: 'Merch' },
 ];
 

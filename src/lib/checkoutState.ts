@@ -40,6 +40,28 @@ export type EventCheckoutState = {
   authIntent?: 'checkout' | 'profile'
   /** Skips login + guest-details; uses combined contact + payment screen. */
   guestCheckout?: boolean
+  /** Filename of uploaded PMR/PSH proof (prototype — no real upload). */
+  pmrProofFileName?: string
+  /** PMR/PSH pre-booking questionnaire answers (no name/email). */
+  pmrAnswers?: PmrPreBookingAnswers
+}
+
+export type PmrPreBookingAnswers = {
+  gender: string
+  birthDay: string
+  birthMonth: string
+  birthYear: string
+  phoneCountryCode: string
+  phoneNational: string
+  country: string
+  city: string
+  postalCode: string
+  address: string
+  situation: string
+  mobilityAid: string
+  assistanceDog: string
+  specificNeeds: string
+  withAssociation: string
 }
 
 /** Demo booking fee: 10% of merchandise subtotal (matches common Ticketclub-style breakdown). */
@@ -94,8 +116,25 @@ export function isEventCheckoutState(x: unknown): x is EventCheckoutState {
   }
   if (o.guestCheckout !== undefined && typeof o.guestCheckout !== 'boolean') return false
   if (o.returnHash !== undefined && typeof o.returnHash !== 'string') return false
+  if (o.pmrProofFileName !== undefined && typeof o.pmrProofFileName !== 'string') return false
+  if (o.pmrAnswers !== undefined && (typeof o.pmrAnswers !== 'object' || o.pmrAnswers === null)) {
+    return false
+  }
   if (o.guest === undefined) return true
   return isGuestDetails(o.guest)
+}
+
+/** True when basket includes PMR/PSH or Accompagnant tickets that need a proof upload. */
+export function checkoutRequiresPmrProof(state: Pick<EventCheckoutState, 'lines'>): boolean {
+  return state.lines.some(
+    (line) => line.id.startsWith('ticket-pmr-') || line.id.startsWith('ticket-acc-'),
+  )
+}
+
+export function checkoutHasPmrProof(
+  state: Pick<EventCheckoutState, 'pmrProofFileName' | 'pmrAnswers'>,
+): boolean {
+  return !!state.pmrProofFileName?.trim() && !!state.pmrAnswers
 }
 
 export type GuestFieldErrors = Partial<

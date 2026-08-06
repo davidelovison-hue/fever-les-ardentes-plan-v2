@@ -49,6 +49,30 @@
   color: #0a0a0a;
 }
 
+.cartEmptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  padding: 0.5rem 0 0.25rem;
+  min-height: 6.5rem;
+}
+
+.cartEmptyTitle {
+  margin: 0;
+  font-size: var(--type-base-size);
+  line-height: var(--type-base-line-height);
+  font-weight: var(--font-weight-semibold);
+  color: #0a0a0a;
+}
+
+.cartEmptyHint {
+  margin: 0;
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line-height);
+  color: #536b75;
+}
+
 .cartList {
   list-style: none;
   margin: 0;

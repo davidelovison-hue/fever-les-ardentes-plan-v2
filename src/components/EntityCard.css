@@ -283,10 +283,11 @@
 
 .header {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, max-content);
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 0.35rem 0.5rem;
   align-items: start;
   width: 100%;
+  min-width: 0;
 }
 
 .titleTagsWrap {
@@ -294,10 +295,10 @@
   grid-row: 1;
   align-self: start;
   justify-self: end;
-  max-width: min(52%, 11rem);
-  min-width: 0;
+  max-width: none;
+  min-width: max-content;
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: flex-end;
   gap: 0.25rem;
 }
@@ -305,13 +306,17 @@
 .titleTagsWrapTicketStub {
   min-height: 1.5rem;
   align-self: center;
+  min-width: 0;
 }
 
 .entityListingTagInTitle {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   white-space: nowrap;
   text-align: end;
-  max-width: 100%;
+  flex-shrink: 0;
+  max-width: none;
+  overflow: visible;
 }
 
 .title {
@@ -478,10 +483,16 @@
 }
 
 .pill:disabled {
-  border: none;
-  background: #f8f9fa;
+  border: 1px solid #e5e7eb;
+  background: #fff;
   color: #a3a9b5;
   cursor: not-allowed;
+  opacity: 0.9;
+}
+
+.pill:disabled:hover {
+  border-color: #e5e7eb;
+  background: #fff;
 }
 
 .footer {
@@ -653,7 +664,8 @@
   .titleTagsWrapTicketStub {
     grid-column: 1;
     grid-row: 2;
-    justify-self: end;
+    justify-self: start;
     max-width: 100%;
+    min-width: 0;
   }
 }

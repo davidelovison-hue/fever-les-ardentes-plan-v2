@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FESTIVAL_EVENT_ID, FESTIVAL_LOGO_SRC } from '../lib/festivalEvent';
+import { scrollPageToTop } from '../lib/scrollPageToTop';
 import { TicketingProfileButton } from './TicketingProfileButton';
 import './FestivalNavbar.css';
 
@@ -32,6 +33,12 @@ export function FestivalNavbar({ profileSlot }: FestivalNavbarProps) {
       <TicketingProfileButton eventId={FESTIVAL_EVENT_ID} size="md" className="festivalNavbarProfileSlot" />
     );
 
+  const goToLandingTop = () => {
+    navigate('/');
+    // Always re-center, including when already on the landing page.
+    scrollPageToTop();
+  };
+
   return (
     <header className="festivalNavbar">
       <div className="festivalNavbarInner">
@@ -39,8 +46,8 @@ export function FestivalNavbar({ profileSlot }: FestivalNavbarProps) {
           <button
             type="button"
             className="logo logoButton"
-            aria-label="Les Ardentes — overview"
-            onClick={() => navigate({ pathname: '/', hash: 'overview' })}
+            aria-label="Les Ardentes — home"
+            onClick={goToLandingTop}
           >
             <img
               className="logoImg"

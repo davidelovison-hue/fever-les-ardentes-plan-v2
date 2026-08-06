@@ -4,18 +4,21 @@ import { CheckoutPaymentMethods } from '../components/CheckoutPaymentMethods'
 import { CheckoutSummaryCard } from '../components/CheckoutSummaryCard'
 import {
   checkoutHasGuestIdentity,
+  checkoutHasPmrProof,
+  checkoutRequiresPmrProof,
   checkoutStateWithoutGuest,
   placeholderGuestForPostBooking,
   type EventCheckoutState,
-  type PostBookingState,
+  type OrderConfirmationState,
 } from '../lib/checkoutState'
 import {
   clearCheckoutFormDrafts,
   persistCheckoutBasket,
   resolveEventCheckoutState,
 } from '../lib/checkoutFlowStorage'
-import { connectPath, planPath, postBookingPath } from '../lib/routes'
-import { upsertUserSession } from '../lib/userSession'
+import { persistOrderConfirmation } from '../lib/orderConfirmStorage'
+import { connectPath, planPath, orderConfirmationPath, pmrPreBookingPath } from '../lib/routes'
+import { persistLastOrderEventId, upsertUserSession } from '../lib/userSession'
 import '../CheckoutPage.css'
 import '../GuestCheckoutPage.css'
 
@@ -32,6 +35,10 @@ export function CheckoutPage() {
 
   if (!eventId || !data) {
     return <Navigate to={eventId ? planPath('tickets') : '/'} replace />
+  }
+
+  if (checkoutRequiresPmrProof(data) && !checkoutHasPmrProof(data)) {
+    return <Navigate to={pmrPreBookingPath(eventId)} replace state={data} />
   }
 
   const stripped = checkoutStateWithoutGuest(data)
@@ -67,12 +74,14 @@ export function CheckoutPage() {
 
   const onPay = () => {
     const orderRef = `ARDE-${eventId.slice(0, 4).toUpperCase()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`
-    const payload: PostBookingState = { ...checkoutData, orderRef }
+    const payload: OrderConfirmationState = { ...checkoutData, orderRef }
     if (checkoutData.email) {
       upsertUserSession({ email: checkoutData.email, name: checkoutData.guest.fullName })
     }
     persistCheckoutBasket(eventId, payload)
-    navigate(postBookingPath(eventId), { state: payload })
+    persistOrderConfirmation(payload)
+    persistLastOrderEventId(eventId)
+    navigate(orderConfirmationPath(eventId), { state: payload })
   }
 
   return (
@@ -94,6 +103,7 @@ export function CheckoutPage() {
           <section className="checkoutGrid__payment guestCheckoutPanel">
             <CheckoutPaymentMethods
               total={checkoutData.total}
+              serviceFee={checkoutData.serviceFee}
               onPay={onPay}
               submitType="button"
             />

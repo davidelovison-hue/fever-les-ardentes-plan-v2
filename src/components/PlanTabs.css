@@ -143,24 +143,24 @@
   }
 
   .tabsScroll {
-    overflow-x: visible;
+    overflow-x: auto;
     scroll-padding-inline: 0;
   }
 
   .tabsList {
-    width: 100%;
-    min-width: 0;
+    width: max-content;
+    min-width: 100%;
     padding: 0;
   }
 
   .tabsItem {
-    flex: 1 1 0;
-    min-width: 0;
+    flex: 1 1 auto;
+    min-width: max-content;
   }
 
   .tabsLink {
     text-align: center;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
 }

@@ -1,0 +1,239 @@
+/* Pre-booking questions — Fever layout + Les Ardentes PMR fields */
+
+.pmrPreBookingPage .checkoutPage__shell {
+  max-width: 62rem;
+}
+
+.pmrPreBookingPanel {
+  display: flex;
+  flex-direction: column;
+  padding-top: 0.25rem;
+  min-width: 0;
+}
+
+.pmrPreBookingPanel__heading {
+  margin: 0 0 1.5rem;
+  font-family: Montserrat, system-ui, sans-serif;
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--checkout-text, #031419);
+}
+
+.pmrPreBookingForm {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 34rem;
+  gap: 0;
+}
+
+.pmrPreBookingForm__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1.125rem;
+}
+
+.pmrPreBookingForm__cta {
+  margin-top: 2rem;
+  padding-bottom: 1rem;
+}
+
+.pmrPreBookingField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  min-width: 0;
+}
+
+.pmrPreBookingField__label {
+  margin: 0;
+  padding: 0;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--checkout-text, #031419);
+}
+
+.pmrPreBookingField__required {
+  color: #eb0052;
+}
+
+.pmrPreBookingField__control {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #9aa6af;
+  border-radius: 0.25rem;
+  background-color: #f3f1ec;
+  color: #031419;
+  font: inherit;
+  font-size: 0.9375rem;
+  line-height: 1.25;
+}
+
+select.pmrPreBookingField__control {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 2.5rem;
+  background-color: #f3f1ec;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23031419' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  background-size: 0.75rem 0.5rem;
+  cursor: pointer;
+}
+
+select.pmrPreBookingField__control:focus {
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23031419' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  background-size: 0.75rem 0.5rem;
+}
+
+.pmrPreBookingField__control:focus {
+  outline: none;
+  border-color: #0079ca;
+  box-shadow: 0 0 0 3px rgba(0, 121, 202, 0.18);
+  background-color: #fff;
+}
+
+.pmrPreBookingField__control--error {
+  border-color: #eb0052;
+}
+
+.pmrPreBookingField__textarea {
+  min-height: 6.5rem;
+  resize: vertical;
+  line-height: 1.4;
+}
+
+.pmrPreBookingDob {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.pmrPreBookingPhone {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: 0.5rem;
+}
+
+.pmrPreBookingPhone__code {
+  padding-left: 0.5rem;
+}
+
+.pmrPreBookingField__fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.pmrPreBookingField__dropzone {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #9aa6af;
+  border-radius: 0.25rem;
+  background: #dfe6eb;
+  color: #536b75;
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+}
+
+.pmrPreBookingField__dropzone:hover {
+  background: #d4dde3;
+}
+
+.pmrPreBookingField__dropzone--filled {
+  color: #031419;
+  font-weight: 600;
+  background: #fff;
+  justify-content: flex-start;
+}
+
+.pmrPreBookingField__dropzone--invalid {
+  border-color: #eb0052;
+}
+
+.pmrPreBookingField__error {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #eb0052;
+}
+
+.pmrPreBookingContinue {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.8125rem 1.25rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: #e36a28;
+  color: #fff;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+}
+
+.pmrPreBookingContinue:hover {
+  background: #cf5c1f;
+}
+
+.pmrPreBookingContinue--disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.pmrPreBookingContinue--disabled:hover {
+  background: #e36a28;
+}
+
+@media (min-width: 960px) {
+  .pmrPreBookingPage .checkoutGrid {
+    align-items: start;
+  }
+
+  .pmrPreBookingSummarySticky {
+    position: sticky;
+    top: calc(var(--festival-nav-height, 4.75rem) + 1.25rem);
+  }
+
+  .pmrPreBookingForm__cta {
+    margin-top: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .pmrPreBookingDob {
+    grid-template-columns: 1fr;
+  }
+
+  .pmrPreBookingPhone {
+    grid-template-columns: 1fr;
+  }
+}

@@ -10,33 +10,8 @@ export function getListingTagTone(tag?: string): 'selling_fast' | 'limited' | 's
   return null;
 }
 
-export function getAxisPlaceholder(axisId: string, label: string): string {
-  switch (axisId) {
-    case 'weekend':
-      return 'Select days';
-    case 'size':
-      return 'Select size';
-    case 'wave':
-      return 'Select wave';
-    case 'day':
-      return 'Select day';
-    case 'camping':
-      return 'Select camping';
-    case 'tent':
-      return 'Select tent';
-    case 'unit':
-      return 'Select unit';
-    case 'duration':
-      return 'Select duration';
-    case 'vehicle':
-      return 'Select vehicle';
-    case 'valid-day':
-      return 'Select day';
-    case 'option':
-      return 'Select option';
-    default:
-      return `Select ${label.toLowerCase()}`;
-  }
+export function getAxisPlaceholder(_axisId: string, _label: string): string {
+  return 'Select option';
 }
 
 export function getEntityMetaLines(entity: {
@@ -92,7 +67,7 @@ export function isTicketWaveLayout(entity: {
 }
 
 export function showTitleListingTag(entity: { id: string; listingTag?: string }): boolean {
-  if (entity.id.startsWith('ticket-')) return false;
+  if (entity.id.startsWith('ticket-')) return !!entity.listingTag?.trim();
   const category =
     entity.id.startsWith('camp-') || entity.id.startsWith('hotel-') || entity.id.startsWith('merch-');
   return category || !!entity.listingTag?.trim();

@@ -17,6 +17,6 @@ function ghPagesSpa404(): import('vite').Plugin {
 
 export default defineConfig(({ mode }) => ({
   plugins: [react(), ...(mode === 'production' ? [ghPagesSpa404()] : [])],
-  base: mode === 'production' ? '/fever-les-ardentes-plan/' : '/',
+  base: mode === 'production' ? '/fever-les-ardentes-plan-v2/' : '/',
   server: { port: 5173 },
 }));

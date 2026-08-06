@@ -17,7 +17,7 @@ export function ensureDemoOrder(): OrderConfirmationState | null {
     eventImage: FESTIVAL_EVENT.image,
     venue: FESTIVAL_EVENT.venue,
     dateLine: FESTIVAL_EVENT.dateLine,
-    lines: [{ id: 'ticket-4day', label: '1× 4 Days Pass', amount: ticketSubtotal }],
+    lines: [{ id: 'ticket-4day', label: '1× PASS 4 JOURS', amount: ticketSubtotal }],
     subtotal: ticketSubtotal,
     serviceFee,
     total,

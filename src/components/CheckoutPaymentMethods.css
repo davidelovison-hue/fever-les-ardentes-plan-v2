@@ -23,6 +23,329 @@
   margin-bottom: 0.5rem;
 }
 
+.checkoutSavedPay {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.checkoutSavedPay__trigger {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  margin: 0;
+  padding: 0.35rem 0;
+  border: none;
+  background: transparent;
+  color: var(--checkout-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.checkoutSavedPay__main {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.checkoutSavedPay__logo {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.checkoutSavedPay__logo svg {
+  width: 2rem;
+  height: 1.25rem;
+  display: block;
+}
+
+.checkoutSavedPay__label {
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--checkout-text);
+}
+
+.checkoutSavedPay__chevron {
+  display: inline-flex;
+  color: var(--checkout-text);
+  flex-shrink: 0;
+}
+
+.payMethodModal {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+}
+
+.payMethodModal__backdrop {
+  position: absolute;
+  inset: 0;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: rgba(3, 20, 25, 0.45);
+  cursor: pointer;
+}
+
+.payMethodModal__card {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  width: min(100%, 26rem);
+  max-height: min(90dvh, 38rem);
+  overflow: auto;
+  padding: 1.15rem 1.25rem 1rem;
+  border-radius: 0.75rem;
+  background: #fff;
+  color: #031419;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.22);
+}
+
+.payMethodModal__header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 0.35rem;
+  min-height: 2rem;
+}
+
+.payMethodModal__card--newCard {
+  padding-top: 1rem;
+}
+
+.payMethodModal__card--newCard .payMethodModal__header {
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e8ecef;
+}
+
+.payMethodModal__title {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.payMethodModal__back,
+.payMethodModal__close {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  border-radius: 9999px;
+  background: transparent;
+  color: #031419;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.payMethodModal__back {
+  left: 0;
+}
+
+.payMethodModal__close {
+  right: 0;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.payMethodModal__back:hover,
+.payMethodModal__close:hover {
+  background: #f2f3f3;
+}
+
+.payMethodModal__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.payMethodModal__option {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 0;
+  border-top: 1px solid #e8ecef;
+  cursor: pointer;
+}
+
+.payMethodModal__option:first-child {
+  border-top: none;
+}
+
+.payMethodModal__option input[type='radio'] {
+  margin: 0;
+  accent-color: #0079ca;
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.payMethodModal__optionIcon {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.payMethodModal__optionIcon svg {
+  width: 2rem;
+  height: 1.25rem;
+  display: block;
+}
+
+.payMethodModal__optionText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.payMethodModal__optionLabel {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #031419;
+}
+
+.payMethodModal__optionSub {
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: #536b75;
+}
+
+.payMethodModal__secure {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.65rem 0 0;
+  padding-top: 0.85rem;
+  border-top: 1px solid #e8ecef;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #536b75;
+}
+
+.addCardForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.addCardForm__field {
+  position: relative;
+}
+
+.addCardForm__field--icon .addCardForm__input {
+  padding-left: 2.75rem;
+}
+
+.addCardForm__icon {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  color: #a7b2ba;
+  pointer-events: none;
+}
+
+.addCardForm__input {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid #ccd2d8;
+  border-radius: 0.5rem;
+  background: #fff;
+  color: #031419;
+  font: inherit;
+  font-size: 0.9375rem;
+}
+
+.addCardForm__input::placeholder {
+  color: #a7b2ba;
+}
+
+.addCardForm__input:focus {
+  outline: none;
+  border-color: #0079ca;
+  box-shadow: 0 0 0 3px rgba(0, 121, 202, 0.15);
+}
+
+.addCardForm__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.addCardForm__accepted {
+  margin-top: 0.35rem;
+}
+
+.addCardForm__acceptedLabel {
+  margin: 0 0 0.45rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #031419;
+}
+
+.addCardForm__brands {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.addCardForm__brands svg {
+  width: 2rem;
+  height: 1.25rem;
+  display: block;
+}
+
+.addCardForm__secure {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.15rem 0 0;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #536b75;
+}
+
+.addCardForm__continue {
+  width: 100%;
+  margin-top: 0.35rem;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.9rem 1.25rem;
+  background: #e36a28;
+  color: #fff;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.addCardForm__continue:hover {
+  background: #cf5c1f;
+}
+
 .guestCheckoutPayMethod {
   display: flex;
   flex-direction: column;
@@ -274,6 +597,12 @@
 
 .guestCheckoutPayBtn {
   margin-top: 0.25rem;
+  background: #e36a28 !important;
+  border-radius: 0.5rem;
+}
+
+.guestCheckoutPayBtn:hover:not(:disabled) {
+  background: #cf5c1f !important;
 }
 
 .checkoutPayBtn:disabled {
@@ -282,7 +611,7 @@
   box-shadow: none;
 }
 
-.checkoutPayBtn:disabled:hover {
-  background: #0a0a0a;
+.checkoutPayBtn.guestCheckoutPayBtn:disabled:hover {
+  background: #e36a28 !important;
   box-shadow: none;
 }

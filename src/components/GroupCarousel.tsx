@@ -6,6 +6,7 @@ import {
   useLayoutEffect,
   useRef,
   useState,
+  type CSSProperties,
   type ReactNode,
 } from 'react';
 import './PlanCategorySection.css';
@@ -14,6 +15,8 @@ type GroupCarouselProps = {
   itemCount: number;
   mobileGroupLayout: 'all' | 'filtered';
   ariaLabel: string;
+  /** Equal-width cards in one row (no horizontal scroll). */
+  layout?: 'default' | 'equalRow';
   children: ReactNode;
 };
 
@@ -36,6 +39,7 @@ export function GroupCarousel({
   itemCount,
   mobileGroupLayout,
   ariaLabel,
+  layout = 'default',
   children,
 }: GroupCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -45,10 +49,13 @@ export function GroupCarousel({
   const [atEnd, setAtEnd] = useState(true);
 
   const slides = Children.toArray(children).filter(isValidElement);
+  const useEqualRow = layout === 'equalRow' && itemCount >= 2;
 
-  const useStack = isMobile && mobileGroupLayout === 'filtered' && itemCount >= 1;
+  const useStack = !useEqualRow && isMobile && mobileGroupLayout === 'filtered' && itemCount >= 1;
   const useCarousel =
-    !useStack && (isMobile ? mobileGroupLayout === 'all' && itemCount > 1 : itemCount >= 3);
+    !useEqualRow &&
+    !useStack &&
+    (isMobile ? mobileGroupLayout === 'all' && itemCount > 1 : itemCount >= 3);
 
   const updateScrollState = useCallback(() => {
     const element = scrollRef.current;
@@ -94,7 +101,10 @@ export function GroupCarousel({
   let containerClass = 'groupCarouselSingle';
   let slideClass = 'carouselSlidePair';
 
-  if (useStack) {
+  if (useEqualRow) {
+    containerClass = 'groupCarouselEqualRow';
+    slideClass = 'carouselSlideEqual';
+  } else if (useStack) {
     containerClass = 'groupCarouselStack';
     slideClass = 'carouselSlideStack';
   } else if (useCarousel) {
@@ -111,6 +121,11 @@ export function GroupCarousel({
       data-scrollable={useCarousel && scrollable ? 'true' : 'false'}
       data-at-start={useCarousel && scrollable ? String(atStart) : 'true'}
       data-at-end={useCarousel && scrollable ? String(atEnd) : 'true'}
+      style={
+        useEqualRow
+          ? ({ ['--equal-row-count' as string]: String(itemCount) } as CSSProperties)
+          : undefined
+      }
     >
       {useCarousel && scrollable ? (
         <>

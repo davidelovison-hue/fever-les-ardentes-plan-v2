@@ -182,7 +182,8 @@
 }
 
 .accountPage__menuBtn:hover {
-  background: #f5f5f5;
+  color: var(--checkout-text);
+  background: #f5e6ec;
 }
 
 .accountPage__avatar {

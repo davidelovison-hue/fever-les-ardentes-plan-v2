@@ -2,6 +2,10 @@ export type VariantAxis = {
   id: string;
   label: string;
   options: string[];
+  /** Shown but not selectable (e.g. sold-out waves). */
+  disabledOptions?: string[];
+  /** Preferred default when set and not disabled. */
+  defaultOption?: string;
 };
 
 export type PlanEntity = {
@@ -30,6 +34,8 @@ export type PlanCategory = {
   id: string;
   title: string;
   contentMode?: 'overview';
+  /** Equal-width cards in one row (e.g. cashless top-ups). */
+  cardLayout?: 'equalRow';
   groups: PlanGroup[];
 };
 
@@ -43,6 +49,15 @@ export const TWO_DAY_AXIS: VariantAxis = {
   id: 'weekend',
   label: 'Days',
   options: ['Thu–Fri', 'Fri–Sat', 'Sat–Sun'],
+};
+
+/** Pricing waves — only Wave 3 remains available. */
+export const WAVE_AXIS: VariantAxis = {
+  id: 'wave',
+  label: 'Wave',
+  options: ['Wave 1', 'Wave 2', 'Wave 3'],
+  disabledOptions: ['Wave 1', 'Wave 2'],
+  defaultOption: 'Wave 3',
 };
 
 export const CAMPING_TYPE_AXIS: VariantAxis = {
@@ -143,6 +158,149 @@ export const MERCH_COMBO_HOODIE_SIZE_AXIS: VariantAxis = {
   options: ['X/S', 'M/L', 'XL/XXL'],
 };
 
+/** Accessible ticket catalog mirrored from tickets.lesardentes.be (PMR / Accompagnant). */
+function buildAccessibleTicketGroups(kind: 'pmr' | 'accompagnant'): PlanGroup[] {
+  const tag = kind === 'pmr' ? 'PMR/PSH' : 'Accompagnant PMR/PSH';
+  const id = kind === 'pmr' ? 'pmr' : 'acc';
+  const accessNote =
+    kind === 'pmr'
+      ? 'Accessible ticket — eligibility applies (PMR/PSH).'
+      : 'Accompagnant PMR/PSH ticket — must accompany a PMR/PSH ticket holder.';
+
+  return [
+    {
+      id: `${id}-pass-4jours`,
+      title: `PASS 4 JOURS ${tag}`,
+      entities: [
+        {
+          id: `ticket-${id}-4day`,
+          name: `PASS 4 JOURS ${tag}`,
+          price: 262,
+          type: 'configurable_single',
+          variantAxes: [WAVE_AXIS],
+          listingTag: 'SELLING FAST',
+          description: `4-day festival access (${tag}). ${accessNote}`,
+        },
+        {
+          id: `ticket-${id}-4day-camp-outdoor`,
+          name: `PASS 4 JOURS + CAMPING OUTDOOR ${tag}`,
+          price: 312,
+          type: 'configurable_single',
+          variantAxes: [WAVE_AXIS],
+          description: `4-day pass + outdoor camping (${tag}). ${accessNote}`,
+          cardPreviewBullets: ['Outdoor camping from Wed 1 Jul 18:00'],
+        },
+        {
+          id: `ticket-${id}-4day-camp-indoor`,
+          name: `PASS 4 JOURS + CAMPING INDOOR ${tag}`,
+          price: 415,
+          type: 'configurable_single',
+          variantAxes: [WAVE_AXIS],
+          description: `4-day pass + indoor camping (${tag}). ${accessNote}`,
+          cardPreviewBullets: ['Indoor camping from Thu 2 Jul 08:00'],
+        },
+      ],
+    },
+    {
+      id: `${id}-pass-2jours`,
+      title: `PASS 2 JOURS ${tag}`,
+      entities: [
+        {
+          id: `ticket-${id}-2day-jf`,
+          name: `PASS 2 JOURS — JEUDI/VENDREDI ${tag}`,
+          price: 203,
+          type: 'configurable_single',
+          variantAxes: [WAVE_AXIS],
+          description: `Thu–Fri pass (${tag}). ${accessNote}`,
+        },
+        {
+          id: `ticket-${id}-2day-vs`,
+          name: `PASS 2 JOURS — VENDREDI/SAMEDI ${tag}`,
+          price: 203,
+          type: 'configurable_single',
+          variantAxes: [WAVE_AXIS],
+          description: `Fri–Sat pass (${tag}). ${accessNote}`,
+        },
+        {
+          id: `ticket-${id}-2day-sd`,
+          name: `PASS 2 JOURS — SAMEDI/DIMANCHE ${tag}`,
+          price: 203,
+          type: 'configurable_single',
+          variantAxes: [WAVE_AXIS],
+          description: `Sat–Sun pass (${tag}). ${accessNote}`,
+        },
+        {
+          id: `ticket-${id}-2day-jf-camp`,
+          name: `PASS 2 JOURS — JEUDI/VENDREDI ${tag} + CAMPING INDOOR`,
+          price: 203,
+          type: 'configurable_single',
+          variantAxes: [WAVE_AXIS],
+          description: `Thu–Fri pass + indoor camping (${tag}). ${accessNote}`,
+        },
+        {
+          id: `ticket-${id}-2day-vs-camp`,
+          name: `PASS 2 JOURS — VENDREDI/SAMEDI ${tag} + CAMPING INDOOR`,
+          price: 203,
+          type: 'configurable_single',
+          variantAxes: [WAVE_AXIS],
+          description: `Fri–Sat pass + indoor camping (${tag}). ${accessNote}`,
+        },
+        {
+          id: `ticket-${id}-2day-sd-camp`,
+          name: `PASS 2 JOURS — SAMEDI/DIMANCHE ${tag} + CAMPING INDOOR`,
+          price: 203,
+          type: 'configurable_single',
+          variantAxes: [WAVE_AXIS],
+          description: `Sat–Sun pass + indoor camping (${tag}). ${accessNote}`,
+        },
+      ],
+    },
+    {
+      id: `${id}-ticket-1jour`,
+      title: `TICKET 1 JOUR ${tag}`,
+      entities: [
+        {
+          id: `ticket-${id}-1day-thu`,
+          name: `LE JEUDI ${tag}`,
+          price: 113,
+          type: 'configurable_single',
+          variantAxes: [WAVE_AXIS],
+          date: 'Thu 2 Jul',
+          description: `Thursday day ticket (${tag}). ${accessNote}`,
+        },
+        {
+          id: `ticket-${id}-1day-fri`,
+          name: `LE VENDREDI ${tag}`,
+          price: 113,
+          type: 'configurable_single',
+          variantAxes: [WAVE_AXIS],
+          date: 'Fri 3 Jul',
+          description: `Friday day ticket (${tag}). ${accessNote}`,
+        },
+        {
+          id: `ticket-${id}-1day-sat`,
+          name: `LE SAMEDI ${tag}`,
+          price: 113,
+          type: 'configurable_single',
+          variantAxes: [WAVE_AXIS],
+          date: 'Sat 4 Jul',
+          listingTag: 'SELLING FAST',
+          description: `Saturday day ticket (${tag}). ${accessNote}`,
+        },
+        {
+          id: `ticket-${id}-1day-sun`,
+          name: `LE DIMANCHE ${tag}`,
+          price: 113,
+          type: 'configurable_single',
+          variantAxes: [WAVE_AXIS],
+          date: 'Sun 5 Jul',
+          description: `Sunday day ticket (${tag}). ${accessNote}`,
+        },
+      ],
+    },
+  ];
+}
+
 export const PLAN_CATALOG: PlanCategory[] = [
   {
     id: 'overview',
@@ -155,36 +313,41 @@ export const PLAN_CATALOG: PlanCategory[] = [
     title: 'Festival Tickets',
     groups: [
       {
-        id: 'passes',
-        title: 'Festival passes',
+        id: 'pass-4jours',
+        title: 'PASS 4 JOURS',
         entities: [
           {
             id: 'ticket-4day',
-            name: '4 Days Pass',
+            name: 'PASS 4 JOURS',
             price: 219,
             type: 'configurable_single',
+            variantAxes: [WAVE_AXIS],
             listingTag: 'SELLING FAST',
             description: 'Festival access for 4 days (2–5 July 2026).',
           },
           {
-            id: 'ticket-1day',
-            name: '1 Day Ticket',
-            price: 89,
+            id: 'ticket-4day-camp-outdoor',
+            name: 'PASS 4 JOURS + CAMPING OUTDOOR',
+            price: 289,
             type: 'configurable_single',
-            variantAxes: [DAY_AXIS],
-            description: 'Single-day festival access — choose your day.',
+            variantAxes: [WAVE_AXIS],
+            description: '4-day festival pass bundled with outdoor camping.',
+            cardPreviewBullets: ['Outdoor camping from Wed 1 Jul 18:00'],
+            includedItems: ['4-day festival pass', 'Outdoor camping', 'Sanitary facilities'],
           },
           {
-            id: 'ticket-2day',
-            name: '2 Day Pass',
-            price: 149,
+            id: 'ticket-4day-camp-indoor',
+            name: 'PASS 4 JOURS + CAMPING INDOOR',
+            price: 349,
             type: 'configurable_single',
-            variantAxes: [TWO_DAY_AXIS],
-            description: 'Two consecutive festival days on one pass.',
+            variantAxes: [WAVE_AXIS],
+            description: '4-day festival pass bundled with indoor camping.',
+            cardPreviewBullets: ['Indoor camping from Thu 2 Jul 08:00'],
+            includedItems: ['4-day festival pass', 'Indoor camping', 'Sanitary facilities'],
           },
           {
             id: 'ticket-duo-damso',
-            name: 'Duo Pass — Damso',
+            name: 'DUO PASS — DAMSO',
             price: 189,
             type: 'configurable_single',
             listingTag: 'LIMITED',
@@ -198,6 +361,103 @@ export const PLAN_CATALOG: PlanCategory[] = [
         ],
       },
       {
+        id: 'pass-2jours',
+        title: 'PASS 2 JOURS',
+        entities: [
+          {
+            id: 'ticket-2day-jf',
+            name: 'PASS 2 JOURS — JEUDI/VENDREDI',
+            price: 149,
+            type: 'configurable_single',
+            variantAxes: [WAVE_AXIS],
+            description: 'Two consecutive festival days — Thursday & Friday.',
+          },
+          {
+            id: 'ticket-2day-vs',
+            name: 'PASS 2 JOURS — VENDREDI/SAMEDI',
+            price: 149,
+            type: 'configurable_single',
+            variantAxes: [WAVE_AXIS],
+            description: 'Two consecutive festival days — Friday & Saturday.',
+          },
+          {
+            id: 'ticket-2day-sd',
+            name: 'PASS 2 JOURS — SAMEDI/DIMANCHE',
+            price: 149,
+            type: 'configurable_single',
+            variantAxes: [WAVE_AXIS],
+            description: 'Two consecutive festival days — Saturday & Sunday.',
+          },
+          {
+            id: 'ticket-2day-jf-camp',
+            name: 'PASS 2 JOURS — JEUDI/VENDREDI + CAMPING INDOOR',
+            price: 199,
+            type: 'configurable_single',
+            variantAxes: [WAVE_AXIS],
+            description: 'Thu–Fri pass with indoor camping access.',
+          },
+          {
+            id: 'ticket-2day-vs-camp',
+            name: 'PASS 2 JOURS — VENDREDI/SAMEDI + CAMPING INDOOR',
+            price: 199,
+            type: 'configurable_single',
+            variantAxes: [WAVE_AXIS],
+            description: 'Fri–Sat pass with indoor camping access.',
+          },
+          {
+            id: 'ticket-2day-sd-camp',
+            name: 'PASS 2 JOURS — SAMEDI/DIMANCHE + CAMPING INDOOR',
+            price: 199,
+            type: 'configurable_single',
+            variantAxes: [WAVE_AXIS],
+            description: 'Sat–Sun pass with indoor camping access.',
+          },
+        ],
+      },
+      {
+        id: 'ticket-1jour',
+        title: 'TICKET 1 JOUR',
+        entities: [
+          {
+            id: 'ticket-1day-thu',
+            name: 'LE JEUDI',
+            price: 89,
+            type: 'configurable_single',
+            variantAxes: [WAVE_AXIS],
+            date: 'Thu 2 Jul',
+            description: 'Single-day festival access — Thursday 2 July.',
+          },
+          {
+            id: 'ticket-1day-fri',
+            name: 'LE VENDREDI',
+            price: 89,
+            type: 'configurable_single',
+            variantAxes: [WAVE_AXIS],
+            date: 'Fri 3 Jul',
+            description: 'Single-day festival access — Friday 3 July.',
+          },
+          {
+            id: 'ticket-1day-sat',
+            name: 'LE SAMEDI',
+            price: 89,
+            type: 'configurable_single',
+            variantAxes: [WAVE_AXIS],
+            date: 'Sat 4 Jul',
+            listingTag: 'SELLING FAST',
+            description: 'Single-day festival access — Saturday 4 July.',
+          },
+          {
+            id: 'ticket-1day-sun',
+            name: 'LE DIMANCHE',
+            price: 89,
+            type: 'configurable_single',
+            variantAxes: [WAVE_AXIS],
+            date: 'Sun 5 Jul',
+            description: 'Single-day festival access — Sunday 5 July.',
+          },
+        ],
+      },
+      {
         id: 'premium',
         title: 'VIP',
         entities: [
@@ -207,7 +467,8 @@ export const PLAN_CATALOG: PlanCategory[] = [
             price: 349,
             type: 'configurable_single',
             listingTag: 'LIMITED',
-            description: 'VIP Club with Phoenix main stage view, plus VIP parking & shuttle when buying 2 identical VIP tickets.',
+            description:
+              'VIP Club with Phoenix main stage view, plus VIP parking & shuttle when buying 2 identical VIP tickets.',
             includedItems: [
               'Festival access',
               'VIP Club area',
@@ -216,6 +477,14 @@ export const PLAN_CATALOG: PlanCategory[] = [
           },
         ],
       },
+    ],
+  },
+  {
+    id: 'pmr',
+    title: 'PMR/PSH & Accompagnant',
+    groups: [
+      ...buildAccessibleTicketGroups('pmr'),
+      ...buildAccessibleTicketGroups('accompagnant'),
     ],
   },
   {
@@ -297,46 +566,14 @@ export const PLAN_CATALOG: PlanCategory[] = [
           },
         ],
       },
-      {
-        id: 'glamping',
-        title: 'All-Star Glamping',
-        entities: [
-          {
-            id: 'camp-glamping',
-            name: 'All-Star Glamping',
-            price: 399,
-            type: 'configurable_single',
-            variantAxes: [GLAMPING_OPTION_AXIS],
-            listingTag: 'LIMITED',
-            description: 'Upgraded on-site comfort with furnished glamping units.',
-            cardPreviewBullets: [
-              'Requires 4 Days Pass + Outdoor or Indoor Camping',
-              'Festitent reservation required',
-            ],
-          },
-          {
-            id: 'camp-glamping-vip',
-            name: 'All-Star Glamping VIP',
-            price: 549,
-            type: 'configurable_single',
-            variantAxes: [GLAMPING_OPTION_AXIS],
-            listingTag: 'LIMITED',
-            description: 'Top-tier glamping near the main arena with premium amenities.',
-            cardPreviewBullets: [
-              'Requires 4 Days Pass + Camping',
-              'Private deck and priority check-in',
-            ],
-          },
-        ],
-      },
     ],
   },
   {
-    id: 'transport',
-    title: 'Travel & Parking',
+    id: 'parking',
+    title: 'Parking',
     groups: [
       {
-        id: 'parking',
+        id: 'parking-options',
         title: 'Parking',
         entities: [
           {
@@ -362,6 +599,46 @@ export const PLAN_CATALOG: PlanCategory[] = [
             type: 'configurable_single',
             variantAxes: [PMR_PARKING_OPTION_AXIS],
             description: 'Accessible parking — reserve via pmr@lesardentes.be if needed.',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'bar',
+    title: 'Bar',
+    groups: [
+      {
+        id: 'cashless-recharges',
+        title: 'Cashless recharges',
+        entities: [
+          {
+            id: 'bar-recharge-20',
+            name: '€20 top-up',
+            price: 20,
+            type: 'configurable_single',
+            description: 'Load €20 onto your cashless wristband.',
+          },
+          {
+            id: 'bar-recharge-50',
+            name: '€50 top-up',
+            price: 50,
+            type: 'configurable_single',
+            description: 'Load €50 onto your cashless wristband.',
+          },
+          {
+            id: 'bar-recharge-100',
+            name: '€100 top-up',
+            price: 100,
+            type: 'configurable_single',
+            description: 'Load €100 onto your cashless wristband.',
+          },
+          {
+            id: 'bar-recharge-150',
+            name: '€150 top-up',
+            price: 150,
+            type: 'configurable_single',
+            description: 'Load €150 onto your cashless wristband.',
           },
         ],
       },

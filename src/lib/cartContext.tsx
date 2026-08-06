@@ -30,7 +30,11 @@ const CartContext = createContext<CartContextValue | null>(null);
 export function getDefaultSelections(entity: PlanEntity): CartSelection {
   const selections: CartSelection = {};
   entity.variantAxes?.forEach((axis) => {
-    selections[axis.id] = axis.options[0] ?? '';
+    const disabled = new Set(axis.disabledOptions ?? []);
+    const preferred =
+      axis.defaultOption && !disabled.has(axis.defaultOption) ? axis.defaultOption : undefined;
+    const firstAvailable = axis.options.find((option) => !disabled.has(option));
+    selections[axis.id] = preferred ?? firstAvailable ?? axis.options[0] ?? '';
   });
   return selections;
 }

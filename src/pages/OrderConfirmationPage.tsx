@@ -39,6 +39,24 @@ export function OrderConfirmationPage() {
     <div className="orderConfirmPage">
       <div className="orderConfirmPage__shell orderConfirmPage__shell--narrow">
         <div className="orderConfirmStack">
+          <div className="orderConfirmSuccess" role="status">
+            <span className="orderConfirmSuccess__icon" aria-hidden>
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <circle cx="20" cy="20" r="20" fill="rgba(36, 168, 101, 0.35)" />
+                <circle cx="20" cy="20" r="19" stroke="rgba(61, 214, 140, 0.45)" strokeWidth="1" />
+                <path
+                  d="M12 20.5l5 5L28 14.5"
+                  stroke="#5ee09a"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+            <h1 className="orderConfirmSuccess__title">Success!</h1>
+            <p className="orderConfirmSuccess__lead">Your booking is confirmed.</p>
+          </div>
+
           <article className="orderConfirmCard">
             <div className="orderConfirmEventRow">
               <img

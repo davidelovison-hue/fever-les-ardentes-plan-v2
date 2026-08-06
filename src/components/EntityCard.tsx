@@ -27,23 +27,27 @@ function listingTagClass(tone: ReturnType<typeof getListingTagTone>) {
 export function EntityCard({ entity }: EntityCardProps) {
   const { getQuantity, setQuantity: setCartQuantity } = useCart();
   const images = getEntityImages(entity.id);
-  const hideImage = entity.id.startsWith('park-');
+  const hideImage =
+    entity.id.startsWith('park-') ||
+    entity.id.startsWith('bar-') ||
+    entity.id.startsWith('ticket-');
   const hasImages = !hideImage && images.length > 0;
   const hasGallery = hasImages && images.length > 1;
   const listingTone = getListingTagTone(entity.listingTag);
   const isSoldOut = listingTone === 'sold_out';
   const isWaveTicket = isTicketWaveLayout(entity);
+  const hasNonWaveAxes = !!entity.variantAxes?.some((axis) => axis.id !== 'wave');
   const metaLines = getEntityMetaLines(entity);
   const previewBullets = getPreviewBullets(entity);
   const showDescription =
     !!entity.description?.trim() &&
     entity.type === 'configurable_single' &&
-    !isWaveTicket;
+    !(isWaveTicket && hasNonWaveAxes);
   const showTitleTagArea =
     !isSoldOut && (isWaveTicket || (showTitleListingTag(entity) && !!entity.listingTag?.trim()));
   const showImageTag = !!entity.listingTag?.trim() && hasImages;
   const showListingInTitle =
-    !!entity.listingTag?.trim() && showTitleTagArea && !showImageTag && !entity.id.startsWith('ticket-');
+    !!entity.listingTag?.trim() && showTitleTagArea && !showImageTag;
 
   const [imageIndex, setImageIndex] = useState(0);
   const [selectedByAxis, setSelectedByAxis] = useState<Record<string, string>>(() =>
@@ -90,6 +94,7 @@ export function EntityCard({ entity }: EntityCardProps) {
 
   const renderAxis = (axis: VariantAxis) => {
     const selected = selectedByAxis[axis.id];
+    const disabledOptions = new Set(axis.disabledOptions ?? []);
 
     return (
       <div key={axis.id} className="axis">
@@ -101,13 +106,14 @@ export function EntityCard({ entity }: EntityCardProps) {
         >
           {axis.options.map((option) => {
             const isSelected = selected === option;
+            const isOptionDisabled = isSoldOut || disabledOptions.has(option);
             return (
               <button
                 key={option}
                 type="button"
                 className={isSelected ? 'pill pillSelected' : 'pill'}
                 aria-pressed={isSelected}
-                disabled={isSoldOut}
+                disabled={isOptionDisabled}
                 onClick={() => selectAxis(axis.id, option)}
               >
                 {option}

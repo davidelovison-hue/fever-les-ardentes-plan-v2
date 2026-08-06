@@ -90,12 +90,12 @@
   width: 100%;
   padding: 1.0625rem 0;
   border: none;
-  border-bottom: 1px solid var(--checkout-border-soft, rgba(255, 255, 255, 0.08));
+  border-bottom: 1px solid #eaeaea;
   background: transparent;
   font-family: var(--font-ui, system-ui, sans-serif);
   font-size: 0.9375rem;
   font-weight: 500;
-  color: var(--checkout-text, #fff);
+  color: var(--checkout-text, #031419);
   text-align: center;
   cursor: pointer;
   transition:
@@ -108,8 +108,8 @@
 }
 
 .accountPage__menuBtn:hover {
-  color: #fff;
-  background: var(--pacha-red-mist, rgba(193, 2, 48, 0.14));
+  color: var(--checkout-text, #031419);
+  background: var(--pacha-red-mist, #f5e6ec);
 }
 
 .accountPage__menuBtn:focus-visible {

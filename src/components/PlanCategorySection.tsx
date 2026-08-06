@@ -14,7 +14,9 @@ type PlanCategorySectionProps = {
 
 export function PlanCategorySection({ category, isActive = true }: PlanCategorySectionProps) {
   const groups = category.groups;
-  const hasSingleGroupEntityFilters = groups.length === 1 && (groups[0]?.entities.length ?? 0) > 1;
+  const equalRow = category.cardLayout === 'equalRow';
+  const hasSingleGroupEntityFilters =
+    !equalRow && groups.length === 1 && (groups[0]?.entities.length ?? 0) > 1;
   const [activeGroupId, setActiveGroupId] = useState<string>(
     groups.length > 1 ? ALL_GROUPS : groups[0]?.id ?? '',
   );
@@ -113,6 +115,7 @@ export function PlanCategorySection({ category, isActive = true }: PlanCategoryS
         <div className="groupBlock">
           <GroupCarousel
             mobileGroupLayout="filtered"
+            layout={equalRow ? 'equalRow' : 'default'}
             itemCount={
               activeEntityId === ALL_GROUPS ? groups[0].entities.length : 1
             }
@@ -134,6 +137,7 @@ export function PlanCategorySection({ category, isActive = true }: PlanCategoryS
                 <h3 className="groupCarouselTitle">{group.title}</h3>
                 <GroupCarousel
                   mobileGroupLayout="all"
+                  layout={equalRow ? 'equalRow' : 'default'}
                   itemCount={group.entities.length}
                   ariaLabel={group.title}
                 >
@@ -147,9 +151,10 @@ export function PlanCategorySection({ category, isActive = true }: PlanCategoryS
         </div>
       ) : activeGroup ? (
         <div className="groupBlock">
-          {!showChips ? <h3 className="groupCarouselTitle">{activeGroup.title}</h3> : null}
+          <h3 className="groupCarouselTitle">{activeGroup.title}</h3>
           <GroupCarousel
             mobileGroupLayout="filtered"
+            layout={equalRow ? 'equalRow' : 'default'}
             itemCount={activeGroup.entities.length}
             ariaLabel={activeGroup.title}
           >

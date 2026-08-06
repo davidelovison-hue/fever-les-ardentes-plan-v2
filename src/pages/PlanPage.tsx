@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { AddToCartToast } from '../components/AddToCartToast';
 import { CartPanel } from '../components/CartPanel';
 import { FestivalGallery } from '../components/FestivalGallery';
@@ -8,6 +9,7 @@ import { OverviewTicketsCta } from '../components/OverviewTicketsCta';
 import { PlanCategorySection } from '../components/PlanCategorySection';
 import { PlanTabs } from '../components/PlanTabs';
 import { useCart } from '../lib/cartContext';
+import { scrollPageToTop } from '../lib/scrollPageToTop';
 import { useIsMobile } from '../lib/useIsMobile';
 import { PLAN_CATALOG } from '../data/planCatalog';
 import './PlanPage.css';
@@ -15,6 +17,8 @@ import './PlanPage.css';
 function getTabFromHash() {
   const hash = window.location.hash.replace(/^#/, '');
   if (hash === 'overview') return 'tickets';
+  if (hash === 'transport') return 'parking';
+  if (hash === 'accompagnant') return 'pmr';
   if (hash && PLAN_CATALOG.some((category) => category.id === hash && category.id !== 'overview')) {
     return hash;
   }
@@ -57,7 +61,7 @@ function getScrollTargetEl(tabId: string) {
   const chips = section.querySelector<HTMLElement>('.groupChipsWrap');
   if (chips) return chips;
 
-  // Tabs without filters (e.g. Travel & Parking) should align to the first visible
+  // Tabs without filters (e.g. Parking) should align to the first visible
   // content block/title, not the section wrapper, to avoid awkward whitespace.
   const firstTitle = section.querySelector<HTMLElement>('.groupCarouselTitle');
   if (firstTitle) return firstTitle;
@@ -119,6 +123,7 @@ function scheduleActiveTabScroll(tabId: string) {
 }
 
 export function PlanPage() {
+  const location = useLocation();
   const { items } = useCart();
   const isMobile = useIsMobile();
   const [activeTab, setActiveTab] = useState(getTabFromHash);
@@ -128,6 +133,15 @@ export function PlanPage() {
   const hasInitialTabScrollRef = useRef(false);
   const hasCart = items.length > 0;
   const showOverviewCta = isOverviewOpen && !hasCart && !isTabsReached;
+
+  // Logo / home: land at the very top of the page (no section jump).
+  useLayoutEffect(() => {
+    if (location.pathname !== '/') return;
+    const hash = location.hash.replace(/^#/, '');
+    if (hash) return;
+    setIsOverviewOpen(false);
+    return scrollPageToTop();
+  }, [location.pathname, location.hash, location.key]);
 
   const handleTabChange = useCallback(
     (tabId: string) => {
@@ -250,12 +264,7 @@ export function PlanPage() {
         </div>
 
         {isMobile && hasCart ? <CartPanel mode="mobile" /> : null}
-
-        {!isMobile && hasCart ? (
-          <CartPanel mode="desktop" />
-        ) : !isMobile ? (
-          <aside className="planCartColumn planCartColumn--placeholder" aria-hidden="true" />
-        ) : null}
+        {!isMobile ? <CartPanel mode="desktop" /> : null}
       </div>
 
       {isOverviewOpen && !hasCart ? (

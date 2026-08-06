@@ -99,6 +99,11 @@ export function CartPanel({ mode }: CartPanelProps) {
     return () => observer.disconnect();
   }, [updateScrollHint]);
 
+  const showScrollHint = useMemo(
+    () => cartHasOverflow && !cartIsAtBottom,
+    [cartHasOverflow, cartIsAtBottom],
+  );
+
   const goToCheckout = () => {
     const returnHash = window.location.hash.replace(/^#/, '') || 'tickets';
     const payload = buildCheckoutFromCart(items, returnHash);
@@ -107,11 +112,47 @@ export function CartPanel({ mode }: CartPanelProps) {
     navigate(connectPath(payload.eventId), { state: payload });
   };
 
-  if (items.length === 0) {
-    return null;
-  }
+  const cartHeader = (showClose = false) => (
+    <div className="cartHeader">
+      <div className="cartHeaderTitleRow">
+        <span className="cartHeaderIcon">
+          <CartIcon />
+        </span>
+        <h2 className="cartTitle" id={showClose ? cartTitleId : undefined}>
+          Your Cart
+        </h2>
+        {showClose ? (
+          <button
+            type="button"
+            className="cartDrawerCloseBtn"
+            aria-label="Close cart"
+            onClick={closeMobileDrawer}
+          >
+            ×
+          </button>
+        ) : null}
+      </div>
+    </div>
+  );
 
-  const showScrollHint = useMemo(() => cartHasOverflow && !cartIsAtBottom, [cartHasOverflow, cartIsAtBottom]);
+  if (items.length === 0) {
+    if (mode !== 'desktop') return null;
+
+    return (
+      <aside className="planCartColumn" aria-label="Shopping cart">
+        <div className="cartPanelReveal">
+          <div className="cartPanel cartPanelFloat cartPanelEmpty" role="complementary">
+            {cartHeader()}
+            <div className="cartEmptyState">
+              <p className="cartEmptyTitle">Your cart is empty</p>
+              <p className="cartEmptyHint">Add tickets to get started.</p>
+            </div>
+          </div>
+        </div>
+        <AddToCartToast variant="desktop" />
+      </aside>
+    );
+  }
 
   const cartList = (
     <ul className="cartList">
@@ -181,29 +222,6 @@ export function CartPanel({ mode }: CartPanelProps) {
         {totalItems} item{totalItems === 1 ? '' : 's'}
       </span>
       <span className="cartSummaryTotal">{formatSummaryPrice(totalPrice)}</span>
-    </div>
-  );
-
-  const cartHeader = (showClose = false) => (
-    <div className="cartHeader">
-      <div className="cartHeaderTitleRow">
-        <span className="cartHeaderIcon">
-          <CartIcon />
-        </span>
-        <h2 className="cartTitle" id={showClose ? cartTitleId : undefined}>
-          Your Cart
-        </h2>
-        {showClose ? (
-          <button
-            type="button"
-            className="cartDrawerCloseBtn"
-            aria-label="Close cart"
-            onClick={closeMobileDrawer}
-          >
-            ×
-          </button>
-        ) : null}
-      </div>
     </div>
   );
 

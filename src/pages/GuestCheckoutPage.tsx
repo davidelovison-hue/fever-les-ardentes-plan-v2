@@ -3,18 +3,21 @@ import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-route
 import { CheckoutPaymentMethods } from '../components/CheckoutPaymentMethods'
 import { CheckoutSummaryCard } from '../components/CheckoutSummaryCard'
 import {
+  checkoutHasPmrProof,
+  checkoutRequiresPmrProof,
   checkoutStateWithoutGuest,
   type EventCheckoutState,
   type GuestDetails,
-  type PostBookingState,
+  type OrderConfirmationState,
 } from '../lib/checkoutState'
 import {
   clearCheckoutFormDrafts,
   persistCheckoutBasket,
   resolveEventCheckoutState,
 } from '../lib/checkoutFlowStorage'
-import { connectPath, planPath, postBookingPath } from '../lib/routes'
-import { upsertUserSession } from '../lib/userSession'
+import { persistOrderConfirmation } from '../lib/orderConfirmStorage'
+import { connectPath, planPath, orderConfirmationPath, pmrPreBookingPath } from '../lib/routes'
+import { persistLastOrderEventId, upsertUserSession } from '../lib/userSession'
 import '../CheckoutPage.css'
 import '../GuestCheckoutPage.css'
 
@@ -104,6 +107,10 @@ export function GuestCheckoutPage() {
     return <Navigate to={eventId ? planPath('tickets') : '/'} replace />
   }
 
+  if (checkoutRequiresPmrProof(data) && !checkoutHasPmrProof(data)) {
+    return <Navigate to={pmrPreBookingPath(eventId)} replace state={data} />
+  }
+
   const basketForConnect = checkoutStateWithoutGuest({ ...data, guestCheckout: undefined })
   const errors = getContactErrors(form)
   const contactValid = Object.keys(errors).length === 0
@@ -130,7 +137,7 @@ export function GuestCheckoutPage() {
     const email = form.email.trim()
     upsertUserSession({ email })
     const orderRef = `ARDE-${eventId.slice(0, 4).toUpperCase()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`
-    const payload: PostBookingState = {
+    const payload: OrderConfirmationState = {
       ...data,
       email,
       guest: guestFromContact(form),
@@ -138,7 +145,9 @@ export function GuestCheckoutPage() {
     }
     delete (payload as EventCheckoutState).guestCheckout
     persistCheckoutBasket(eventId, payload)
-    navigate(postBookingPath(eventId), { state: payload })
+    persistOrderConfirmation(payload)
+    persistLastOrderEventId(eventId)
+    navigate(orderConfirmationPath(eventId), { state: payload })
   }
 
   return (
@@ -271,6 +280,7 @@ export function GuestCheckoutPage() {
 
               <CheckoutPaymentMethods
                 total={data.total}
+                serviceFee={data.serviceFee}
                 onPay={onPay}
                 submitType="submit"
                 showTermsAccept={false}

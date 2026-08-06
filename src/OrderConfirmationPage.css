@@ -112,6 +112,43 @@
   gap: 1.25rem;
 }
 
+.orderConfirmSuccess {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0;
+  padding: 1.5rem 1.25rem 1.375rem;
+  border-radius: var(--checkout-radius-card, 0.75rem);
+  background: rgba(36, 168, 101, 0.12);
+  border: 1px solid rgba(36, 168, 101, 0.22);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.orderConfirmSuccess__icon {
+  display: flex;
+  margin-bottom: 0.75rem;
+}
+
+.orderConfirmSuccess__title {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--checkout-text);
+}
+
+.orderConfirmSuccess__lead {
+  margin: 0;
+  max-width: 16rem;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--checkout-text-muted);
+}
+
 .orderConfirmCard {
   border-radius: var(--checkout-radius-card, 0.75rem);
   padding: 1.25rem 1.2rem;

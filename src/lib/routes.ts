@@ -21,6 +21,10 @@ export function guestCheckoutPath(eventId: string): string {
   return `/event/${eventId}/guest-checkout`;
 }
 
+export function pmrPreBookingPath(eventId: string): string {
+  return `/event/${eventId}/pmr-questions`;
+}
+
 export function orderConfirmationPath(eventId: string): string {
   return `/event/${eventId}/confirmation`;
 }

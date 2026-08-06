@@ -1,13 +1,20 @@
-/** Reset scroll position and mobile zoom after route changes (e.g. checkout → post-booking). */
+/** Reset scroll position and mobile zoom after route changes (e.g. checkout → confirmation). */
 export function scrollPageToTop(): () => void {
   const scrollTop = () => {
     window.scrollTo(0, 0)
     document.documentElement.scrollTop = 0
     document.body.scrollTop = 0
+
+    document
+      .querySelectorAll<HTMLElement>('.appShell, .connectPage, .checkoutPage, .orderConfirmPage, .accountPage, .pmrPreBookingPage')
+      .forEach((el) => {
+        el.scrollTop = 0
+      })
   }
 
   scrollTop()
   const rafId = requestAnimationFrame(scrollTop)
+  const timeoutId = window.setTimeout(scrollTop, 50)
 
   const ae = document.activeElement
   if (ae instanceof HTMLElement) ae.blur()
@@ -24,6 +31,7 @@ export function scrollPageToTop(): () => void {
 
   return () => {
     cancelAnimationFrame(rafId)
+    window.clearTimeout(timeoutId)
     if (resetTimer !== undefined) window.clearTimeout(resetTimer)
     if (vp) vp.setAttribute('content', defaultContent)
   }
