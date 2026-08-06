@@ -1,0 +1,120 @@
+.planOverviewCollapsible {
+  box-sizing: border-box;
+  min-width: 0;
+  margin: 0 1rem 0.75rem;
+  width: calc(100% - 2rem);
+  background: #f5e6ec;
+  border: 1px solid rgb(138 19 67 / 0.14);
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 4px rgba(138, 19, 67, 0.06);
+  overflow: hidden;
+}
+
+.planOverviewCollapsibleOpen {
+  background: #fff;
+  border-color: #e8e8e8;
+  box-shadow: none;
+}
+
+.planOverviewToggle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  margin: 0;
+  padding: 0.95rem 1rem;
+  border: none;
+  background: transparent;
+  color: #0a0a0a;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.planOverviewCollapsible:not(.planOverviewCollapsibleOpen) .planOverviewToggle:hover {
+  background: rgb(138 19 67 / 0.05);
+}
+
+.planOverviewCollapsibleOpen .planOverviewToggle:hover {
+  background: #fafafa;
+}
+
+.planOverviewToggleLabel {
+  flex-shrink: 0;
+  font-size: var(--type-base-size);
+  line-height: var(--type-base-line-height);
+  font-weight: var(--font-weight-bold);
+  color: #7b0f3a;
+}
+
+.planOverviewCollapsibleOpen .planOverviewToggleLabel {
+  color: #0a0a0a;
+}
+
+.planOverviewToggleHint {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: var(--type-small-size);
+  line-height: var(--type-small-line-height);
+  font-weight: var(--font-weight-regular);
+  color: #536b75;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.planOverviewCollapsible:not(.planOverviewCollapsibleOpen) .planOverviewToggleHint {
+  color: #031419;
+  font-weight: var(--font-weight-semibold);
+}
+
+.planOverviewChevron {
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: #fff;
+  color: #8a1343;
+  font-size: 0.85rem;
+  line-height: 1;
+  box-shadow: 0 1px 3px rgba(138, 19, 67, 0.12);
+}
+
+.planOverviewCollapsibleOpen .planOverviewChevron {
+  background: #f2f3f3;
+  color: #536b75;
+  box-shadow: none;
+}
+
+.planOverviewPanel {
+  box-sizing: border-box;
+  padding: 0 1rem 1.25rem;
+  border-top: 1px solid #f0f0f0;
+}
+
+.planOverviewPanel[hidden] {
+  display: none;
+}
+
+.planPageOverviewOpen .planOverviewPanel {
+  padding-bottom: calc(4.25rem + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 901px) {
+  .planOverviewCollapsible {
+    margin: 0 0 1rem;
+    width: 100%;
+  }
+
+  .planOverviewToggle {
+    padding: 0.85rem 1rem;
+  }
+
+  .planOverviewPanel {
+    padding: 0 1rem 1.5rem;
+  }
+}

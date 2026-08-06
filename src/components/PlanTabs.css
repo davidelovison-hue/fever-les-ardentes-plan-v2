@@ -1,0 +1,166 @@
+.stickyTabsBar {
+  margin: 0;
+  padding: 0;
+  background: #f6f7f7;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.tabsNav {
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: none;
+  background: #f6f7f7;
+}
+
+.tabsBarInner {
+  display: flex;
+  align-items: stretch;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 0 0 1rem;
+  box-sizing: border-box;
+  min-width: 0;
+  background: #f6f7f7;
+}
+
+.tabsScroll {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  min-height: 2.75rem;
+  background: #f6f7f7;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scroll-padding-inline: 0.5rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.tabsScroll::-webkit-scrollbar {
+  display: none;
+}
+
+.tabsScrollCue {
+  display: none;
+  flex: 0 0 2rem;
+  align-items: center;
+  justify-content: center;
+  background: #f6f7f7;
+  color: #536b75;
+  pointer-events: none;
+  position: relative;
+}
+
+.tabsScrollCue::before {
+  content: '';
+  position: absolute;
+  left: -0.75rem;
+  top: 0;
+  bottom: 0;
+  width: 0.75rem;
+  background: linear-gradient(90deg, rgba(246, 247, 247, 0), #f6f7f7);
+  pointer-events: none;
+}
+
+.tabsScrollCueIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 9999px;
+  background: #fff;
+  font-size: 1rem;
+  line-height: 1;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.tabsBarInner[data-scrollable='true'] .tabsScrollCue {
+  display: flex;
+}
+
+.tabsBarInner[data-scrollable='true'][data-at-end='true'] .tabsScrollCue {
+  display: none;
+}
+
+.tabsList {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0 0.5rem 0 0;
+  min-width: min-content;
+}
+
+.tabsItem {
+  flex-shrink: 0;
+}
+
+.tabsLink {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0.625rem 1rem;
+  font: inherit;
+  font-size: calc(var(--type-small-size) + 2pt);
+  line-height: calc(var(--type-small-line-height) + 2pt);
+  font-weight: var(--font-weight-regular);
+  color: #4b5563;
+  text-decoration: none;
+  text-align: inherit;
+  white-space: nowrap;
+  background: #f6f7f7;
+  border: none;
+  border-bottom: 2px solid transparent;
+  box-sizing: border-box;
+  cursor: pointer;
+  appearance: none;
+  transition: color 0.12s ease, border-color 0.12s ease;
+}
+
+.tabsLink:hover {
+  color: #1f2937;
+}
+
+.tabsLinkActive {
+  color: #0079ca;
+  font-weight: var(--font-weight-bold);
+  border-bottom-color: #0079ca;
+}
+
+@media (min-width: 901px) {
+  .tabsBarInner {
+    padding: 0 1rem;
+  }
+
+  .tabsScrollCue {
+    display: none !important;
+  }
+
+  .tabsScroll {
+    overflow-x: visible;
+    scroll-padding-inline: 0;
+  }
+
+  .tabsList {
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+  }
+
+  .tabsItem {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .tabsLink {
+    text-align: center;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
